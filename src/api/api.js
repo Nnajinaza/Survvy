@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  // baseURL: "https://survvy.onrender.com/api/v1" ,
-  baseURL: "http://localhost:4000/api/v1" ,
+  baseURL: "https://survvy.onrender.com/api/v1" ,
+  // baseURL: "http://localhost:4000/api/v1" ,
 });
 
 // A queue to hold pending requests during token refresh
