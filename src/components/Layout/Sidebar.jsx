@@ -1,5 +1,5 @@
 // import { useDashboard } from "../../context/DashboardContext";
-import { FaHome, FaUsers, FaClipboardList, FaCog, FaBars, FaChevronLeft } from "react-icons/fa";
+import { FaHome, FaUsers, FaClipboardList, FaBars, FaChevronLeft } from "react-icons/fa";
 import { useDashboard } from "../../context/DashboardContext";
 import React, { useState } from 'react';
 
