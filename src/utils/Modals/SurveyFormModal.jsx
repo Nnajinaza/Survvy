@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import api from "../../api/api";
 
 const SurveyFormModal = ({ isOpen, onClose, onSubmit, defaultValues }) => {
@@ -9,13 +9,12 @@ const SurveyFormModal = ({ isOpen, onClose, onSubmit, defaultValues }) => {
     isActive: false,
     organization: "",
   });
-    const [searchTerm, setSearchTerm] = useState("");
-    const [currentPage, setCurrentPage] = useState(1);
+    const [searchTerm] = useState("");
+    const [currentPage] = useState(1);
   const itemsPerPage = 10;
-  const [totalPages, setTotalPages] = useState(1);
+  // const [totalPages, setTotalPages] = useState(1);
 
 
-  console.log("form date]a", organizations)
   useEffect(() => {
     if (defaultValues) {
       setFormData({
@@ -39,14 +38,13 @@ const SurveyFormModal = ({ isOpen, onClose, onSubmit, defaultValues }) => {
           },
         });
           setOrganizations(response.data.data);
-        console.log("Response data:dd", organizations); // Log the response data
       } catch (error) {
         console.error("Error fetching organizations:", error);
       }
     };
 
     fetchOrganizations();
-  }, []);
+  }, [currentPage, searchTerm]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -58,7 +56,6 @@ const SurveyFormModal = ({ isOpen, onClose, onSubmit, defaultValues }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted with data:", formData);
     onSubmit(formData);
     onClose();
   };
@@ -67,29 +64,29 @@ const SurveyFormModal = ({ isOpen, onClose, onSubmit, defaultValues }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded w-full max-w-lg">
-        <h2 className="text-xl font-bold mb-4">
-          {defaultValues ? "Edit Survey" : "Add New Survey"}
+      <div className="bg-white p-6 rounded w-full max-w-xl ">
+        <h2 className="text-xl font-bold mb-8 text-center">
+          {defaultValues ? "Edit Survey" : "Create New Survey"}
         </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block mb-1">Title</label>
+        <form onSubmit={handleSubmit} className="space-y-4 text-bg font-semibold">
+          <div className="mb-6">
+            <label className="block mb-1 font-semibold text-base text-gray-800">Title</label>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-1 focus:ring-[#86BC24]"
               required
             />
           </div>
-          <div>
-            <label className="block mb-1">Description</label>
+          <div className="mb-6">
+            <label className="block mb-1 font-semibold text-base text-gray-800">Description</label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-1 focus:ring-[#86BC24]"
               required
             />
           </div>
@@ -104,13 +101,13 @@ const SurveyFormModal = ({ isOpen, onClose, onSubmit, defaultValues }) => {
               required
             />
           </div> */}
-          <div>
-            <label className="block mb-1">Organization</label>
+          <div className="mb-6">
+            <label className="block mb-1 font-semibold text-base text-gray-800">Organization</label>
             <select
               name="organization"
               value={formData.organization}
               onChange={handleChange}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-1 focus:ring-[#86BC24]"
               required
             >
               <option value="">Select an organization</option>
@@ -121,21 +118,21 @@ const SurveyFormModal = ({ isOpen, onClose, onSubmit, defaultValues }) => {
               ))}
             </select>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center mb-6">
             <input
               type="checkbox"
               name="isActive"
               checked={formData.isActive}
               onChange={handleChange}
-              className="mr-2"
+              className="mr-2 focus:outline-none focus:ring-1 focus:ring-[#86BC24]"
             />
             <label>Is Active</label>
           </div>
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-between gap-2">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 border rounded"
+              className="px-4 py-2 border rounded hover:bg-[#87bc24f6] hover:text-white"
             >
               Cancel
             </button>

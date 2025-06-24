@@ -3,6 +3,7 @@ import { useDashboard } from "../../context/DashboardContext";
 import OrganizationModule from "../../components/Layout/OrganizationModule";
 import SurveyModule from "../../components/Layout/SurveyModule";
 import OverviewModule from "../../components/Layout/OverviewModule";
+import TemplateLibrary from "../../components/Layout/LibraryModule";
 
 const Dashboard = () => {
   const { activeModule } = useDashboard();  // Fetch the active module from the context
@@ -15,9 +16,9 @@ const Dashboard = () => {
     case 'surveys':
       module = <SurveyModule />;
       break;
-    case 'settings':
-      module = <OverviewModule />;
-      break;
+    // case 'library':
+    //   module = <TemplateLibrary />;
+    //   break;
     default:
       module = <OverviewModule />;  // Default module (overview)
   }

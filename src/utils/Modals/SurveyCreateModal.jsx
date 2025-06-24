@@ -7,7 +7,6 @@ const SurveyCreateModal = ({ isOpen, onClose, organizationId, onCreated }) => {
     const [isActive, setIsActive] = useState(true)
   
     const handleSubmit = async () => {
-      // call API to create survey
       await api.post("/surveys", {
         title,
         description,

@@ -3,9 +3,8 @@ import OrganizationFormModal from "../../utils/Modals/OrganizationFormModal";
 import ConfirmDeleteModal from "../../utils/Modals/ConfirmDeleteModal";
 import api from "../../api/api";
 import ActionMenu from "../../utils/ActionMenu";
-import { FaAngleDoubleLeft, FaAngleDoubleRight, FaArrowLeft, FaPlusCircle } from "react-icons/fa";
+import { FaAngleDoubleLeft, FaAngleDoubleRight, FaPlusCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import ShareSurveyModal from "../Organization/ShareSurveyComponent";
 
 const OrganizationModule = () => {
   const [organizations, setOrganizations] = useState([]);
@@ -16,7 +15,7 @@ const OrganizationModule = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [showShareModal, setShowShareModal] = useState(false);
+  // const [setShowShareModal] = useState(false);
 
   const itemsPerPage = 10;
 
@@ -32,7 +31,6 @@ const OrganizationModule = () => {
           search: searchTerm,
         },
       });
-      console.log("Response data:", response); // Log the response data
 
       // Apply frontend pagination manually
       const allOrganizations = response.data.data;
@@ -43,7 +41,6 @@ const OrganizationModule = () => {
       );
       setOrganizations(paginatedOrganizations);
       setTotalPages(Math.ceil(response.data.total / itemsPerPage));
-      console.log("orgab", organizations)
     } catch (error) {
       console.error("Error fetching organizations:", error);
     } finally {
@@ -59,10 +56,10 @@ const OrganizationModule = () => {
     navigate(`/organizations/${org.id}`);
   };
 
-  const handleShare = (organization) => {
-    setSelectedOrg(organization);
-    setShowShareModal(true);
-  };
+  // const handleShare = (organization) => {
+  //   setSelectedOrg(organization);
+  //   setShowShareModal(true);
+  // };
 
   const handleEdit = (org) => {
     setSelectedOrg(org);
@@ -97,20 +94,20 @@ const OrganizationModule = () => {
         // Create new organization
         await api.post("/organizations", formData);
       }
-      fetchOrganizations(); // Refresh the list after submission
+      fetchOrganizations();
       setIsFormModalOpen(false);
-      setSelectedOrg(null); // Reset selected organization
+      setSelectedOrg(null);
     } catch (error) {
       console.error("Error submitting form:", error);
       setIsFormModalOpen(false);
-      setSelectedOrg(null); // Reset selected organization
+      setSelectedOrg(null);
       alert("Error submitting form. Please try again.");
     }
   };
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
-    setCurrentPage(1); // Reset to the first page when search changes
+    setCurrentPage(1);
   };
 
   return (
@@ -165,7 +162,7 @@ const OrganizationModule = () => {
                   <td className="py-2 px-4 text-sm font-medium  gap-2">
                     <ActionMenu
                       onEdit={() => handleEdit(org)}
-                      onView={() => handleView(org)} // you can replace this with real view logic
+                      onView={() => handleView(org)}
                       onDelete={() => handleDelete(org)}
                       // onShare={() => handleShare(org)}
                     />{" "}

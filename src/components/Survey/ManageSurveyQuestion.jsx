@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import api from "../../api/api";
-import { FaAngleDown, FaArrowAltCircleDown, FaArrowAltCircleUp, FaPlusCircle, FaTrashAlt } from "react-icons/fa";
+import { FaArrowAltCircleDown, FaArrowAltCircleUp, FaPlusCircle, FaTrashAlt } from "react-icons/fa";
 
 const ManageSurveyQuestions = ({ surveyId }) => {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showManageModal, setShowManageModal] = useState(false);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -39,7 +41,18 @@ const ManageSurveyQuestions = ({ surveyId }) => {
     ]);
   };
 
-  const deleteQuestion = (index) => {
+  const deleteQuestion = async (index) => {
+    const questionToDelete = questions[index];
+
+  // If it's a saved question in the DB
+  if (questionToDelete.id) {
+    try {
+      await api.delete(`/question/${questionToDelete.id}`);
+    } catch (error) {
+      console.error("Failed to delete question from backend:", error);
+      return;
+    }
+  }
     const updated = [...questions];
     updated.splice(index, 1);
     setQuestions(updated);
@@ -96,8 +109,13 @@ const ManageSurveyQuestions = ({ surveyId }) => {
         return base;
       });
 
-      await api.post(`/question/bulk-questions`, preparedQuestions);
-      alert("Questions saved!");
+      const submittedData = await api.post(`/question/bulk-questions`, preparedQuestions);
+      const res = await api.get(`/survey/${surveyId}`);
+      setShowSuccessModal(true);
+      setQuestions(res.data.questions || []);
+      console.log(submittedData.status)
+
+      // setQuestions([submittedData.data])
     } catch (err) {
       console.error("Error submitting questions", err);
     }
@@ -182,20 +200,50 @@ const ManageSurveyQuestions = ({ surveyId }) => {
           )}
         </div>
       ))}
+      <div>
+        <button
+          onClick={addNewQuestion}
+          className="bg-[#86bc23] text-white font-medium px-4 py-2 rounded"
+        >
+          <FaPlusCircle className="inline text-center mr-2" /> Add Question
+        </button>
+        <button
+          onClick={submitAll}
+          className="bg-blue-600 text-white font-medium px-4 py-2 rounded ml-4"
+        >
+          Save All
+        </button> 
+      </div> 
+      {showSuccessModal && (
+      <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 sm:w-[400px] text-center animate-fadeIn">
+          <h2 className="text-xl font-bold text-green-600 mb-2">
+            🎉 Question Submitted!
+          </h2>
+          <p className="text-gray-700 mb-4">Your question has been successfully added.</p>
 
-      <button
-        onClick={addNewQuestion}
-        className="bg-[#86bc23] text-white font-medium px-4 py-2 rounded"
-      >
-        <FaPlusCircle className="inline text-center mr-2" /> Add Question
-      </button>
-
-      <button
-        onClick={submitAll}
-        className="bg-blue-600 text-white font-medium px-4 py-2 rounded ml-4"
-      >
-        Save All
-      </button>
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={() => {
+                setShowSuccessModal(false);
+                setShowManageModal(true)
+                // trigger open manage modal here
+              }}
+              className="bg-[#86BC23] hover:bg-[#76aa1f] text-white px-4 py-2 rounded"
+              >
+              {showManageModal === true && (<ManageSurveyQuestions surveyId={surveyId} />)}
+              Manage Questions
+            </button>
+            <button
+              onClick={() => setShowSuccessModal(false)}
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
     </div>
   );
 };

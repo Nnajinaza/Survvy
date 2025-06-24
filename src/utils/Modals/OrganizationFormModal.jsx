@@ -42,12 +42,12 @@ const OrganizationFormModal = ({ isOpen, onClose, onSubmit, defaultValues }) => 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-[420px]">
-        <h2 className="text-xl font-bold mb-4">{defaultValues ? "Edit Organization" : "Add Organization"}</h2>
+    <div className="fixed inset-0 flex justify-center items-center w-full bg-gray-700 bg-opacity-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-[580px]">
+        <h2 className="text-xl font-bold mb-8">{defaultValues ? "Edit Organization" : "Add Organization"}</h2>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+          <div className="mb-6">
+            <label htmlFor="name" className="block font-semibold text-base text-gray-800">
               Name
             </label>
             <input
@@ -60,8 +60,8 @@ const OrganizationFormModal = ({ isOpen, onClose, onSubmit, defaultValues }) => 
             />
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+          <div className="mb-6">
+            <label htmlFor="description" className="block font-semibold text-base text-gray-800">
               Description
             </label>
             <input
@@ -74,8 +74,8 @@ const OrganizationFormModal = ({ isOpen, onClose, onSubmit, defaultValues }) => 
             />
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="staffNumber" className="block text-sm font-medium text-gray-700">
+          <div className="mb-6">
+            <label htmlFor="staffNumber" className="block text-base font-semibold text-gray-800">
               Staff Number
             </label>
             <input
@@ -89,8 +89,8 @@ const OrganizationFormModal = ({ isOpen, onClose, onSubmit, defaultValues }) => 
             />
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="sector" className="block text-sm font-medium text-gray-700">
+          <div className="mb-6">
+            <label htmlFor="sector" className="block text-base font-semibold text-gray-800">
               Sector
             </label>
             <input

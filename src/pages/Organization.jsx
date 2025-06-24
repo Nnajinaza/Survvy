@@ -1,81 +1,10 @@
-// import { useParams } from "react-router-dom";
-// import { useEffect, useState } from "react";
-// import api from "../api/api";
-// import OrganizationHeader from "../components/Organization/OrganizationHeader";
-// import StaffList from "../components/Organization/StaffList";
-// import SurveyList from "../components/Organization/SurveyList";
-// import EmailStaffModal from "../utils/Modals/EmailStaffModal";
-// import SurveyFormModal from "../utils/Modals/SurveyFormModal";
-// import SurveyCreateModal from "../utils/Modals/SurveyCreateModal";
-// import OrgSideBar from "../components/Organization/OrgSideBar";
-// // import OrganizationHeader from "../components/organization/OrganizationHeader";
-// // import SurveyCreateModal from "../components/organization/SurveyCreateModal";
-// // import StaffList from "../components/organization/StaffList";
-// // import SurveyList from "../components/organization/SurveyList";
-// // import EmailStaffModal from "../components/organization/EmailStaffModal";
-
-// const OrganizationDetailPage = () => {
-//   const { id } = useParams();
-//   const [organization, setOrganization] = useState(null);
-//   const [surveys, setSurveys] = useState([]);
-//   const [staff, setStaff] = useState([]);
-//   const [showSurveyModal, setShowSurveyModal] = useState(false);
-//   const [showEmailModal, setShowEmailModal] = useState(false);
-
-//   const loadDetails = async () => {
-//     const org = await api.get(`/organizations/${id}`);
-//     // const orgSurveys = await api.get(`/surveys/organization/${id}`);
-//     // const orgStaff = await api.get(`/staff/organization/${id}`);
-
-//     setOrganization(org.data);
-//     setSurveys(org.data.surveys);
-//     setStaff(org.data.staffs);
-//   };
-
-//   useEffect(() => {
-//     loadDetails();
-//   }, [id]);
-
-//   if (!organization) return <div>Loading organization details...</div>;
-
-//   return (
-//     <div className="">
-//       <OrganizationHeader
-//         name={organization.name}
-//         onCreateSurvey={() => setShowSurveyModal(true)}
-//         onEmailStaff={() => setShowEmailModal(true)}
-//       />
-//       <OrgSideBar />
-//       <StaffList staff={staff} />
-//       <SurveyList surveys={surveys} />
-
-//       <SurveyCreateModal
-//         isOpen={showSurveyModal}
-//         onClose={() => setShowSurveyModal(false)}
-//         organizationId={id}
-//         onCreated={loadDetails}
-//       />
-//       <EmailStaffModal
-//         isOpen={showEmailModal}
-//         onClose={() => setShowEmailModal(false)}
-//         staffEmails={staff.map(s => s.email)}
-//       />
-//     </div>
-//   );
-// };
-
-// export default OrganizationDetailPage;
-
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import OrgSideBar from "../components/Organization/OrgSideBar";
 import StaffList from "../components/Organization/StaffList";
 import SurveyList from "../components/Organization/SurveyList";
-import SurveyFormModal from "../utils/Modals/SurveyFormModal";
-import ShareSurveyComponent from "../components/Organization/ShareSurveyComponent.jsx"; // hypothetical
 import api from "../api/api";
 import { useParams } from "react-router-dom";
 import CreateSurveyOrg from "../components/Organization/CreateOrgSurvey";
-import ShareSurveyModal from "../components/Organization/ShareSurveyComponent.jsx";
 import ImportStaff from "../components/Organization/ImportStaff.jsx";
 
 const OrganizationDetailPage = () => {

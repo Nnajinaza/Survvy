@@ -1,22 +1,3 @@
-// import { useContext } from "react";
-// import { AuthContext } from "../../context/AuthContext";
-
-// const Header = () => {
-//   const { logout, userRole } = useContext(AuthContext);
-
-//   return (
-//     <header style={{ background: "#fff", padding: "1rem", borderBottom: "1px solid #ddd" }}>
-//       <div style={{ display: "flex", justifyContent: "space-between" }}>
-//         <span>Logged in as <strong>{userRole}</strong></span>
-//         <button onClick={logout}>Logout</button>
-//       </div>
-//     </header>
-//   );
-// };
-
-// export default Header;
-
-
 import { FaBell, FaSearch } from "react-icons/fa";
 
 export const Header = ({ onMenuClick, brand }) => (

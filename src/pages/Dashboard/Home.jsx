@@ -17,8 +17,8 @@ const Home = () => {
         <header className='h-12 z-10 bg-slate-50 px-6 flex justify-between items-center border border-b-2'>
             <Link to={"/"} className='text-[#86BC24] text-2xl text-accent font-medium flex items-center'>Survvy</Link>
             <div className='flex justify-center gap-4 items-center text-lg font-seri font-medium'>
-                <p className='text-gray-700 hover:text-[#86BC24]'>Request a demo</p>
-                <p className='text-gray-700 hover:text-[#86BC24]'>Our Services</p>
+                {/* <p className='text-gray-700 hover:text-[#86BC24]'>Request a demo</p>
+                <p className='text-gray-700 hover:text-[#86BC24]'>Our Services</p> */}
                 <p className='text-gray-700 hover:text-[#86BC24]'>About us</p>
                 <Link to={"/login"} className='text-gray-700 hover:text-[#86BC24]'>Login</Link>
             </div>

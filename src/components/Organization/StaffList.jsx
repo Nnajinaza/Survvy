@@ -1,4 +1,4 @@
-import { FaPlus, FaPlusCircle } from "react-icons/fa";
+import { FaPlusCircle } from "react-icons/fa";
 import Papa from "papaparse";
 import { useState } from "react";
 import api from "../../api/api";
@@ -50,9 +50,6 @@ const StaffList = ({ staff, onImportStaff, orgId }) => {
         <p className="text-gray-500 w-full  text-center">
           No staff members found.
         </p>
-        <button className=" bg-[#86BC23] px-4 py-1 mt-3 rounded-md text-slate-100 font-medium text-base flex items-center gap-2">
-          Add staff <FaPlusCircle />
-        </button>
         <label className="bg-[#86BC23] px-4 py-1 mt-3 rounded-md text-slate-100 font-medium text-base flex items-center gap-2 cursor-pointer">
           Add staff <FaPlusCircle />
           <input

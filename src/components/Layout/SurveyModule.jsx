@@ -57,7 +57,6 @@ const SurveyModule = () => {
     fetchSurveys();
   }, [searchTerm, currentPage]);
 
-  console.log("thiis ssf f", surveys);
   const handleEdit = (survey) => {
     setSelectedSurvey(survey);
     setIsFormModalOpen(true);

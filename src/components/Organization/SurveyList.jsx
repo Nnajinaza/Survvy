@@ -12,18 +12,16 @@ const SurveyList = ({ surveys, orgName, staffs }) => {
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedSurvey, setSelectedSurvey] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [setLoading] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
 
   const itemsPerPage = 10;
 
   const navigate = useNavigate();
   
-
-  console.log(surveys);
   const fetchSurveys = async () => {
     setLoading(true);
     try {
@@ -48,6 +46,7 @@ const SurveyList = ({ surveys, orgName, staffs }) => {
   };
 
   const id = survey.id
+
   const handleView = () => {
     navigate(`/survey/${id}`);
   }  

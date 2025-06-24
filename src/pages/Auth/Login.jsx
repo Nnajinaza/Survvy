@@ -24,7 +24,6 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await api.post("/auth/login", formData);
-      console.log("Login response:", res.data);
       // const { accessToken, refreshToken, user } = res.data;
   
       // Save to localStorage for persistence

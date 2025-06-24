@@ -64,9 +64,9 @@ const ImportStaff = ({ onImportStaff, orgId }) => {
   };
 
   return (
-    <div className="flex flex-col justify-end items-center w-full text-left bg-slate-00">
+    <div className="flex flex-col justify-center items-center w-full text-left bg-slate-00 max-h-full h-screen">
       {/* Upload Button */}
-      <label className="bg-[#86BC23] px-4 py-2 mt-3 rounded-md text-white font-medium text-base flex items-center justify-end gap-2 cursor-pointer">
+      <label className="bg-[#86BC23] px-4 py-2 mt-3 rounded-md text-white font-medium text-base flex items-center justify-center gap-2 cursor-pointer">
         Add staff <FaPlusCircle />
         <input
           type="file"
