@@ -63,7 +63,7 @@ const ShareSurveyModal = ({ isOpen, onClose, survey, staffEmails }) => {
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-lg w-[400px] relative shadow-lg">
+      <div className="bg-white p-6 rounded-lg w-[400px] relative shadow-lg mx-8">
         <button className="absolute top-2 right-3 text-gray-500 hover:text-red-500" onClick={onClose}>
           ✕
         </button>

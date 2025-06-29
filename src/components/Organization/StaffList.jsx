@@ -15,13 +15,12 @@ const StaffList = ({ staff, onImportStaff, orgId }) => {
       skipEmptyLines: true,
       complete: (results) => {
         const parsedData = results.data.map((row) => ({
-          fullName: row.name || `${row.firstname} ${row.lastname}`,
+          fullName: row.name || `${row.firstname ?? ""} ${row.lastname ?? ""}`.trim(),
           email: row.email,
           role: row.role || "Staff",
-          department: row.department,
-        }));
+          department: row.department ?? "",
+        })).filter(s => s.email && s.fullName); // basic validation
 
-        // Call a function to update the staff list
         onImportStaff(parsedData);
         setStaffList(parsedData);
       },
@@ -30,13 +29,13 @@ const StaffList = ({ staff, onImportStaff, orgId }) => {
 
   const sendToBackend = async () => {
     try {
-      const payload = {
+      const response = await api.post("/staff/import-staff", {
         orgId,
         staff: staffList,
-      };
-      const response = await api.post("/staff/import-staff", payload);
+      });
 
       alert("Import success!");
+      setStaffList([]);
       console.log(response.data);
     } catch (err) {
       console.error("Import failed", err);
@@ -44,54 +43,53 @@ const StaffList = ({ staff, onImportStaff, orgId }) => {
     }
   };
 
-  if (!staff.length)
-    return (
-      <div className="flex flex-col justify-center items-center h-full">
-        <p className="text-gray-500 w-full  text-center">
-          No staff members found.
-        </p>
-        <label className="bg-[#86BC23] px-4 py-1 mt-3 rounded-md text-slate-100 font-medium text-base flex items-center gap-2 cursor-pointer">
-          Add staff <FaPlusCircle />
-          <input
-            type="file"
-            accept=".csv"
-            className="hidden"
-            onChange={handleFileUpload}
-          />
-        </label>
-      </div>
-    );
+return (
+  <div className="px-4 pt-6"> {/* pt-6 adds top spacing */}
+    {/* Top Row: Import Button + Save Button (if applicable) */}
+    <div className="flex flex-wrap items-center justify-between mb-4 gap-4">
+      <label className="bg-[#86BC23]/80 hover:bg-[#86BC23] text-white px-4 py-2 rounded-md sm:font-medium sm:text-base text-sm flex items-center justify-end text-end gap-2 cursor-pointer">
+        Import CSV <FaPlusCircle />
+        <input
+          type="file"
+          accept=".csv"
+          className="hidden"
+          onChange={handleFileUpload}
+        />
+      </label>
 
-  return (
-    <div className="overflow-x-auto px-6">
-      <table className="min-w-full text-sm text-left border border-gray-200">
-        <thead className="bg-gray-50 text-gray-700 uppercase text-xs">
-          <tr>
-            <th className="px-6 py-3">Full Name</th>
-            <th className="px-6 py-3">Email</th>
-            <th className="px-6 py-3">Role</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y">
-          {staff.map((s, index) => (
-            <tr key={index} className="hover:bg-gray-50">
-              <td className="px-6 py-3">{s.fullName}</td>
-              <td className="px-6 py-3">{s.email}</td>
-              <td className="px-6 py-3">{s.role || "Staff"}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
       {staffList.length > 0 && (
         <button
-          className="mt-4 bg-[#86BC23] text-white px-4 py-2 rounded-md"
+          className="bg-[#86BC23] text-white px-4 py-2 rounded-md font-medium"
           onClick={sendToBackend}
         >
           Save Imported Staff
         </button>
       )}
     </div>
-  );
+
+    {/* Staff Table */}
+    <div className="overflow-x-auto border rounded shadow-sm">
+      <table className="min-w-full text-sm text-left">
+        <thead className="bg-gray-50 text-gray-600 uppercase text-sm">
+          <tr>
+            <th className="px-4 py-3">Full Name</th>
+            <th className="px-4 py-3">Email</th>
+            <th className="px-4 py-3">Role</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y">
+          {staff.map((s, index) => (
+            <tr key={index} className="hover:bg-gray-50">
+              <td className="px-4 py-2">{s.fullName}</td>
+              <td className="px-4 py-2">{s.email}</td>
+              <td className="px-4 py-2">{s.role || "Staff"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+);
 };
 
 export default StaffList;

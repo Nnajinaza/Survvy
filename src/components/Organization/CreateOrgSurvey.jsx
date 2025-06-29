@@ -2,12 +2,11 @@ import { useState } from "react";
 import api from "../../api/api";
 
 const CreateSurveyOrg = ({ organizationId, onCreated }) => {
-  console.log("org name:", organizationId)
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     isActive: false,
-    organization: organizationId.name,
+    organization: organizationId,
   });
 
   const handleChange = (e) => {
@@ -18,48 +17,45 @@ const CreateSurveyOrg = ({ organizationId, onCreated }) => {
     }));
   };
 
-  const handleSubmit = async (formData) => {
-    const newSurvey = await api.post("/survey", formData);
-    console.log("New survey created:", newSurvey.data); // Log the new survey data
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await api.post("/survey", formData);
+      console.log("New survey created:", response.data);
+      onCreated?.(response.data);
+    } catch (err) {
+      console.error("Failed to create survey", err);
+    }
   };
 
   return (
-    <div className=" flex justify-start px-12 bg-pink-00 h-[560px]">
-      <div className="bg-slate-00 p-6 rounded w-full max-w-3xl">
-        <h4 className="text-[#86BC23] font-bold text-2xl mb-8 uppercase">Create a new survey</h4>
-        <form onSubmit={handleSubmit} className="bg-slate-00 h-full">
-          <div className="bg-slate-00">
-            <label className="block mb-1">Title</label>
+    <div className="flex justify-center px-4 sm:px-6 lg:px-12 py-12">
+      <div className="w-full max-w-3xl bg-white p-6 rounded shadow-md">
+        <h4 className="text-[#86BC23] font-bold text-xl sm:text-2xl mb-8 uppercase text-center">
+          Create a new survey
+        </h4>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block mb-1 font-medium text-gray-700">Title</label>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-1 focus:ring-[#86BC24]"
               required
             />
           </div>
           <div>
-            <label className="block mb-1">Description</label>
+            <label className="block mb-1 font-medium text-gray-700">Description</label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-1 focus:ring-[#86BC24]"
               required
             />
           </div>
-          {/* <div>
-              <label className="block mb-1">Join Code</label>
-              <input
-                type="text"
-                name="joinCode"
-                value={formData.joinCode}
-                onChange={handleChange}
-                className="w-full border px-3 py-2 rounded"
-                required
-              />
-            </div> */}
           <div className="flex items-center">
             <input
               type="checkbox"
@@ -68,15 +64,14 @@ const CreateSurveyOrg = ({ organizationId, onCreated }) => {
               onChange={handleChange}
               className="mr-2"
             />
-            <label>Is Active</label>
+            <label className="text-gray-700">Is Active</label>
           </div>
-          <div className="flex justify-end gap-2 bg-slate-00 items-baseline mt-48">
+          <div className="flex justify-end mt-4">
             <button
               type="submit"
-              className="hover:bg-[#86BC24] hover:text-white px-4 py-2 rounded font-medium text-slate-500 bg-gray-200"
-              onClick={onCreated}
+              className="bg-[#86BC24] text-white font-medium px-6 py-2 rounded hover:bg-[#76a81f] transition"
             >
-                Create
+              Create
             </button>
           </div>
         </form>

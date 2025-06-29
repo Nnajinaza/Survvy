@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../api/api';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { FaDownload } from 'react-icons/fa';
+import { FaAngleDoubleRight, FaDownload } from 'react-icons/fa';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF'];
 const OPTION_TYPES = ['multiple-choice', 'checkbox', 'radio', 'dropdown'];
@@ -102,17 +102,40 @@ const ResponseSection = ({ surveyId }) => {
 
   return (
     <section className="px-4 py-6 bg-slate-50">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex gap-4">
-          <button onClick={() => setSection(1)} className={`px-4 py-2 rounded font-medium hover:bg-[#86bc23]/50 ${section === 1 ? 'bg-[#86BC23] text-white' : 'bg-[#86BC23]/40'}`}>Questions</button>
-          <button onClick={() => setSection(2)} className={`px-4 py-2 rounded font-medium hover:bg-[#86bc23]/50 ${section === 2 ? 'bg-[#86BC23] text-white' : 'bg-[#86BC23]/40'}`}>By Staff</button>
-          <button onClick={() => setSection(3)} className={`px-4 py-2 rounded font-medium hover:bg-[#86bc23]/50 ${section === 3 ? 'bg-[#86BC23] text-white' : 'bg-[#86BC23]/40'}`}>Insights</button>
-        </div>
-        <button onClick={exportAll} className="flex items-center gap-2 px-4 py-2 bg-[#86BC23]/40 font-medium  hover:text-white rounded hover:bg-[#86BC23]">
-          <FaDownload /> Download All
-        </button>
-      </div>
-
+<div className="flex flex-auto sm:flex-row bg-slate-00 sm:items-center justify-between mb-6">
+  <div className="flex flex-wrap gap-2 sm:gap-4">
+    <button
+      onClick={() => setSection(1)}
+      className={`px-4 py-2 rounded font-medium hover:bg-[#86bc23]/50 ${
+        section === 1 ? 'bg-[#86BC23] text-white' : 'bg-[#86BC23]/40'
+      }`}
+    >
+      Questions
+    </button>
+    <button
+      onClick={() => setSection(2)}
+      className={`px-4 py-2 rounded font-medium hover:bg-[#86bc23]/50 ${
+        section === 2 ? 'bg-[#86BC23] text-white' : 'bg-[#86BC23]/40'
+      }`}
+    >
+      By Staff
+    </button>
+    <button
+      onClick={() => setSection(3)}
+      className={`px-3 py-2 rounded font-medium hover:bg-[#86bc23]/50 ${
+        section === 3 ? 'bg-[#86BC23] text-white' : 'bg-[#86BC23]/40'
+      }`}
+    >
+      Insights
+    </button>
+    <button
+      onClick={exportAll}
+      className="flex items-center justify-center gap-2 px-4 py-2 bg-[#86BC23]/40 font-medium hover:text-white rounded hover:bg-[#86BC23]"
+      >
+      <FaDownload /><span className='hidden sm:inline'>Download All</span>
+    </button>
+    </div>
+    </div>
       {/* Section 1: Questions */}
       {section === 1 && (
         <div className="space-y-2 bg-white p-4 rounded shadow-md">
@@ -127,8 +150,8 @@ const ResponseSection = ({ surveyId }) => {
           ))}
 
           {isQuestionModalOpen && selectedQuestion && (
-            <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-              <div className="bg-white rounded-lg p-6 shadow-xl max-w-lg w-full">
+            <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center ">
+              <div className="bg-white rounded-lg p-6 shadow-xl max-w-lg w-full mx-8">
                 <h2 className="text-lg font-medium text-gray-900 mb-4">{selectedQuestion.question}</h2>
                 <div className="space-y-3 max-h-80 overflow-y-auto mb-4">
                   {responses.filter(r => r.question.id === selectedQuestion.id).map((r, i) => (
@@ -143,7 +166,7 @@ const ResponseSection = ({ surveyId }) => {
                   <button onClick={() => exportResponses(responses.filter(r => r.question.id === selectedQuestion.id), selectedQuestion.question)} className="flex items-center gap-2 px-3 py-1 bg-[#86BC23]/70 text-white rounded hover:bg-[#86BC23]">
                     <FaDownload /> Download
                   </button>
-                  <button onClick={closeQuestionModal} className="px-3 py-1 bg-gray-400 text-white rounded hover:bg-gray-500">Close</button>
+                  <button onClick={closeQuestionModal} className="px-3 py-1 bg-slate-300 text-white rounded hover:bg-[#86BC23]">Close</button>
                 </div>
               </div>
             </div>
@@ -153,16 +176,16 @@ const ResponseSection = ({ surveyId }) => {
 
       {/* Section 2: Staff */}
       {section === 2 && (
-        <div>
+        <div className=''>
           <h3 className="font-bold mb-3">Staff Respondents</h3>
           <ul className="space-y-2">
             {staffList.map(staff => (
               <li key={staff.id}>
                 <button
                   onClick={() => openStaffModal(staff)}
-                  className="w-full text-left px-3 py-2 bg-gray-100 rounded hover:bg-gray-200"
+                  className="w-full flex items-center gap-4 text-left px-3 py-2 bg-gray-100 rounded hover:bg-gray-200"
                 >
-                  {staff.fullName || staff.email}
+                  <FaAngleDoubleRight /> {staff.fullName || staff.email}
                 </button>
               </li>
             ))}
@@ -170,7 +193,7 @@ const ResponseSection = ({ surveyId }) => {
 
           {isStaffModalOpen && selectedStaff && (
             <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-              <div className="bg-white rounded-lg p-6 shadow-xl max-w-lg w-full">
+              <div className="bg-white rounded-lg p-6 shadow-xl max-w-lg w-full mx-8">
                 <h2 className="text-lg font-medium text-gray-900 mb-4">Responses: {selectedStaff.fullName || selectedStaff.email}</h2>
                 <div className="space-y-3 max-h-80 overflow-y-auto mb-4">
                   {responses.filter(r => r.staff.id === selectedStaff.id).map((r, i) => (

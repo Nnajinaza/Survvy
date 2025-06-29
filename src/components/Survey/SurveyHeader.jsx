@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
+import { FaHome } from "react-icons/fa";
 
 const SurveyHeader = ({ survey, showSection, handleChange, handleShare }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -8,12 +9,13 @@ const SurveyHeader = ({ survey, showSection, handleChange, handleShare }) => {
   return (
     <div className="mb border-b pb-3 flex items-center justify-between shadow-sm px-4 sm:px-10 relative">
       {/* Left: Back to Dashboard */}
-      <div className="flex items-center gap-3 mb-2">
+      <div className="flex items-center gap-3 ">
         <Link
           to="/dashboard"
-          className="text-[#86BC23] text-base uppercase font-medium hover:underline flex items-center gap-1"
+          className="text-[#86BC23] text-xl sm:text-base uppercase font-medium hover:underline flex items-center gap-1"
         >
-          Dashboard
+          <FaHome/>
+          <span className="hidden">Download</span>
         </Link>
       </div>
 
@@ -22,7 +24,7 @@ const SurveyHeader = ({ survey, showSection, handleChange, handleShare }) => {
         <h1 className="text-base sm:text-lg md:text-xl font-bold uppercase text-gray-800">
             {survey.title}:
         </h1>
-        <p className="text-sm sm:text-base md:text-lg uppercase font-medium text-gray-600">
+        <p className="text-sm sm:text-base md:text-lg uppercase font-medium text-gray-600 hidden">
             {survey.description}
         </p>
       </div>

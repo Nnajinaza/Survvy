@@ -6,17 +6,16 @@ import { Header } from "./Header";
 
 const Layout = () => {
   return (
-    <div className="app-layout" style={{ display: "flex", height: "100vh" }}>
-      <Sidebar />
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <Header />
-        <main style={{ flex: 1, padding: "1rem", overflowY: "auto" }}>
-          <Outlet />
-        </main>
-      </div>
-      <ToastContainer position="top-right" autoClose={3000} />
-    </div>
+<div className="app-layout flex h-screen overflow-hidden w-full">
+  <Sidebar />
+  <div className="flex flex-col flex-1 min-w-0 h-full">
+    <Header />
+    <main className="flex-1 min-w-0  overflow-x-auto p-4">
+      <Outlet className="h-auto flex flex-col"/>
+    </main>
+  </div>
+  <ToastContainer position="top-right" autoClose={3000} />
+</div>
   );
 };
-
 export default Layout;
