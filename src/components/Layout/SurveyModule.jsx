@@ -93,11 +93,8 @@ const SurveyModule = () => {
           `/survey/${selectedSurvey.id}`,
           formData
         );
-        console.log("Updated survey:", updatedSurvey.data); // Log the updated survey data
       } else {
-        console.log("Creating new survey:", formData); // Log the form data before creating a new survey
         const newSurvey = await api.post("/survey", formData);
-        console.log("New survey created:", newSurvey.data); // Log the new survey data
       }
       fetchSurveys();
       setIsFormModalOpen(false);
@@ -107,147 +104,132 @@ const SurveyModule = () => {
     }
   };
 
-  return (
-    <div className="">
-      <div className="flex justify-between items-center mb-8">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search by title"
-            className="border px-3 py-2 rounded w-full max-w-sm relative focus:outline-none focus:ring-1 focus:ring-[#86BC24]"
-            value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-              setCurrentPage(1);
-            }}
-          />
-          <FaSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" />
-        </div>
-
-        {/* <h2 className="text-2xl font-bold">Surveys</h2> */}
-        <button
-          onClick={() => setIsFormModalOpen(true)}
-          className="bg-[#86BC24] text-white px-4 py-2 rounded font-medium"
-        >
-          Add New Surveys
-          <FaPlusCircle className="ml-4 inline" />
-        </button>
+return (
+  <div className="w-full px-4 sm:px-6 lg:px-8">
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+      <div className="relative w-full sm:w-auto">
+        <input
+          type="text"
+          placeholder="Search by title"
+          className="border px-3 py-2 pr-10 rounded w-full max-w-sm focus:outline-none focus:ring-1 focus:ring-[#86BC24]"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setCurrentPage(1);
+          }}
+        />
+        <FaSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" />
       </div>
 
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <>
-          <div className="h-[360px] overflow-auto">
-            <table className="min-w-full table-auto border">
-              <thead>
-                <tr className="bg-gray-200 text-gray-800 text-sm uppercase font-bold text-left py-4 ">
-                  <th className="px-4 py-2 border-b">Title</th>
-                  <th className="px-4 py-2 border-b">Description</th>
-                  <th className="px-4 py-2 border-b">Active</th>
-                  <th className="px-4 py-2 border-b">Join Code</th>
-                  <th className="px-4 py-2 border-b">Organization</th>
-                  <th className="px-4 py-2 border-b">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {surveys.map((survey) => (
-                  <tr
-                    key={survey.id}
-                    className="border-b hover:bg-gray-100 font-[600]  text-base"
-                  >
-                    <td className="px-4 text-sm font-medium py-2">
-                      {survey.title}
-                    </td>
-                    <td className="px-4 text-sm font-medium py-2">
-                      {survey.description}
-                    </td>
-                    <td className="px-4 text-sm font-medium py-2">
-                      {survey.isActive ? "Yes" : "No"}
-                    </td>
-                    <td className="px-4 text-sm font-medium py-2">
-                      {survey.joinCode}
-                    </td>
-                    <td className="px-4 text-sm font-medium py-2">
-                      {survey.organization.name}
-                    </td>
-                    <td className="px-4 py-2 text-center">
-                      <ActionMenu
-                        onEdit={() => handleEdit(survey)}
-                        onView={() => handleView(survey)} // you can replace this with real view logic
-                        onDelete={() => handleDelete(survey)}
-                        // onShare={() => handleShare(survey)}
-                      />{" "}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="flex justify-end items-center mt-4 gap-2">
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className={`px-3 py-1 rounded ${
-                currentPage === 1
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-gray-200"
-              }`}
-            >
-              <FaAngleDoubleLeft className="ml-2 inline " /> 
-            </button>
-
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentPage(i + 1)}
-                className={`px-3 py-1 rounded ${
-                  currentPage === i + 1
-                    ? "bg-[#86BC24] text-white"
-                    : "bg-gray-200"
-                }`}
-              >
-                {i + 1}
-              </button>
-            ))}
-
-            <button
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              disabled={currentPage === totalPages}
-              className={`px-3 py-1 rounded ${
-                currentPage === totalPages
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-gray-200"
-              }`}
-            >
-              <FaAngleDoubleRight className="ml-2 inline" />
-            </button>
-          </div>
-        </>
-      )}
-
-      <SurveyFormModal
-        isOpen={isFormModalOpen}
-        onClose={() => setIsFormModalOpen(false)}
-        onSubmit={handleFormSubmit}
-        defaultValues={selectedSurvey}
-      />
-      <ConfirmDeleteModal
-        isOpen={isDeleteModalOpen}
-        onCancel={() => setIsDeleteModalOpen(false)}
-        onConfirm={handleDeleteConfirm}
-        name={selectedSurvey?.title}
-      />
-      <ShareSurveyModal
-        isOpen={showShareModal}
-        onClose={() => setShowShareModal(false)}
-        survey={surveys}
-        // staffEmails={surveys.organization.staffs.map((staff) => staff.email)}
-      />
+      <button
+        onClick={() => setIsFormModalOpen(true)}
+        className="flex items-center gap-2 bg-[#86BC24] text-white px-4 py-2 rounded font-medium whitespace-nowrap"
+      >
+        Add New Survey
+        <FaPlusCircle />
+      </button>
     </div>
-  );
+
+    {loading ? (
+      <div className="flex justify-center items-center gap-2 text-gray-600 text-base font-medium py-12">
+        <svg className="animate-spin h-5 w-5 text-[#86BC24]" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+        </svg>
+        Loading surveys...
+      </div>
+    ) : (
+      <>
+        <div className="overflow-x-auto border rounded-md h-[500px]">
+          <table className="min-w-full table-auto text-sm ">
+            <thead>
+              <tr className="bg-gray-200 text-gray-800 text-xs sm:text-sm uppercase font-bold">
+                <th className="px-3 sm:px-4 py-2 border-b">Title</th>
+                <th className="px-3 sm:px-4 py-2 border-b">Description</th>
+                <th className="px-3 sm:px-4 py-2 border-b">Active</th>
+                <th className="px-3 sm:px-4 py-2 border-b">Join Code</th>
+                <th className="px-3 sm:px-4 py-2 border-b">Organization</th>
+                <th className="px-3 sm:px-4 py-2 border-b">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {surveys.map((survey) => (
+                <tr key={survey.id} className="hover:bg-gray-100 border-b text-[15px]">
+                  <td className="px-4 py-2">{survey.title}</td>
+                  <td className="px-4 py-2 text-clip ">{survey.description}</td>
+                  <td className="px-4 py-2">{survey.isActive ? "Yes" : "No"}</td>
+                  <td className="px-4 py-2">{survey.joinCode}</td>
+                  <td className="px-4 py-2">{survey.organization.name}</td>
+                  <td className="px-4 py-2 text-center">
+                    <ActionMenu
+                      onEdit={() => handleEdit(survey)}
+                      onView={() => handleView(survey)}
+                      onDelete={() => handleDelete(survey)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Pagination Controls */}
+        <div className="flex flex-wrap justify-end items-center gap-2 mt-4">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className={`px-3 py-1 rounded ${
+              currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-gray-200"
+            }`}
+          >
+            <FaAngleDoubleLeft className="inline" />
+          </button>
+
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i + 1)}
+              className={`px-3 py-1 rounded ${
+                currentPage === i + 1 ? "bg-[#86BC24] text-white" : "bg-gray-200"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+
+          <button
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className={`px-3 py-1 rounded ${
+              currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-gray-200"
+            }`}
+          >
+            <FaAngleDoubleRight className="inline" />
+          </button>
+        </div>
+      </>
+    )}
+
+    {/* Modals */}
+    <SurveyFormModal
+      isOpen={isFormModalOpen}
+      onClose={() => setIsFormModalOpen(false)}
+      onSubmit={handleFormSubmit}
+      defaultValues={selectedSurvey}
+    />
+    <ConfirmDeleteModal
+      isOpen={isDeleteModalOpen}
+      onCancel={() => setIsDeleteModalOpen(false)}
+      onConfirm={handleDeleteConfirm}
+      name={selectedSurvey?.title}
+    />
+    <ShareSurveyModal
+      isOpen={showShareModal}
+      onClose={() => setShowShareModal(false)}
+      survey={surveys}
+    />
+  </div>
+);
 };
 
 export default SurveyModule;

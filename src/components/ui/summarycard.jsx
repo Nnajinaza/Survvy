@@ -3,7 +3,7 @@ import React from 'react';
 
 const SummaryCard = ({ title, value }) => {
   return (
-    <div className="relative overflow-hidden rounded-xl bg-white p-4 shadow group transition-all duration-300 hover:shadow-lg my-4">
+    <div className="relative overflow-hidden rounded-xl bg-white p-4 shadow group transition-all duration-300 hover:shadow-lg my-">
       {/* Animated background */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#86bc238a] to-[#86BC23] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out opacity-30 pointer-events-none" />
 

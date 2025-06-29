@@ -24,7 +24,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="flex-1 p-6 ">
+    <div className="flex-1 w-full max-w-full min-h-0 flex flex-col">
       <Suspense fallback={<div>Loading...</div>}>
         {module}  {/* Render the selected module */}
       </Suspense>
